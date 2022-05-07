@@ -27,7 +27,22 @@ phi_values = {
 
 
 class CNNBlock(nn.Module):
-    pass
+    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, groups=1):
+        super(CNNBlock, self).__init__()
+        self.cnn = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride,
+            padding,
+            groups=groups
+        )
+        self.bn = nn.BatchNorm2d(out_channels)  # TODO read about bn
+        self.silu = nn.SiLU()
+
+    def forward(self, x):
+        return self.silu(self.bn(self.cnn(x)))
+
 
 
 class SqueezeExcitation(nn.Module):
